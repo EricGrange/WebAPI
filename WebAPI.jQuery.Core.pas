@@ -85,7 +85,7 @@ type
       function Clone(withDataAndEvents : Boolean) : JJQuery; overload; external 'clone';
       function Clone(withDataAndEvents, deepWithDataAndEvents : Boolean) : JJQuery; overload; external 'clone';
 
-      function CSS(name : String) : String; overload; external 'css';
+      function Contents : JJQuery; overload; external 'contents';      function CSS(name : String) : String; overload; external 'css';
       function CSS(name : String; value : Variant) : JJQuery; overload; external 'css';
 
       function Data(key : String) : Variant; overload; external 'data';
@@ -218,6 +218,8 @@ type
       function SlideUp : JJQuery; overload; external 'slideUp';
       function SlideUp(duration : Integer) : JJQuery; overload; external 'slideUp';
       function SlideUp(duration : Integer; complete : procedure) : JJQuery; overload; external 'slideUp';
+
+      function ScrollTop(value : Float) : JJQuery; external 'scrollTop';
 
       function Sort(compare : TJQueryCompareFunction) : JJQuery; external 'sort';
 
