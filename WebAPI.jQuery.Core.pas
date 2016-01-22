@@ -1,4 +1,4 @@
-unit WebAPI.jQuery.Core;
+﻿unit WebAPI.jQuery.Core;
 
 interface
 
@@ -49,6 +49,8 @@ type
 
       function After(content : String) : JJQuery; overload; external 'after';
       function After(content : JJQuery) : JJQuery; overload; external 'after';
+
+      function Animate(options : Variant) : JJQuery; overload; external 'animate';
 
       function Append(content : String) : JJQuery; overload; external 'append';
       function Append(content : JJQuery) : JJQuery; overload; external 'append';
@@ -172,6 +174,7 @@ type
       function Load(url, data : String; success : TJQueryAjaxSimpleSuccess) : JJQuery; overload; external 'load';
 
       function On(event : String; callback : TJQueryEvent) : JJQuery; overload; external 'on';
+      function Off(event : String) : JJQuery; overload; external 'off';
 
       function Offset : TJQueryPosition; overload; external 'offset';
 
