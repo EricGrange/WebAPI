@@ -87,7 +87,7 @@ type
       function Clone(withDataAndEvents : Boolean) : JJQuery; overload; external 'clone';
       function Clone(withDataAndEvents, deepWithDataAndEvents : Boolean) : JJQuery; overload; external 'clone';
 
-      function Contents : JJQuery; overload; external 'contents';      function CSS(name : String) : String; overload; external 'css';
+      function Contents : JJQuery; overload; external 'contents';
 
       function CSS(name : String) : String; overload; external 'css';
       function CSS(name : String; value : Variant) : JJQuery; overload; external 'css';
