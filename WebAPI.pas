@@ -44,6 +44,7 @@ function Window : Variant; external 'window' property;
 function Console : Variant; external 'console' property;
 function Math : Variant; external 'Math' property;
 function LocalStorage : Variant; external 'localStorage' property;
+
 procedure Alert(msg : String); external 'alert';
 
 function SetTimeout(proc : procedure; delayMilliseconds : Integer) : Integer; external 'setTimeout';

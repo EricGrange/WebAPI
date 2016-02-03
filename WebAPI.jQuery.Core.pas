@@ -88,6 +88,8 @@ type
       function Clone(withDataAndEvents, deepWithDataAndEvents : Boolean) : JJQuery; overload; external 'clone';
 
       function Contents : JJQuery; overload; external 'contents';      function CSS(name : String) : String; overload; external 'css';
+
+      function CSS(name : String) : String; overload; external 'css';
       function CSS(name : String; value : Variant) : JJQuery; overload; external 'css';
 
       function Data(key : String) : Variant; overload; external 'data';
@@ -208,6 +210,11 @@ type
 
       function RemoveClass(name : String) : JJQuery; external 'removeClass';
 
+      function ReplaceWith : String; overload; external 'replaceWith';
+      function ReplaceWith(htmlString : Variant) : JJQuery; overload; external 'replaceWith';
+
+      function Select : JJQuery; external 'select';
+
       function Show : JJQuery; overload; external 'show';
       function Show(duration : Integer) : JJQuery; overload; external 'show';
       function Show(duration : Integer; complete : procedure) : JJQuery; overload; external 'show';
@@ -230,6 +237,12 @@ type
       function Text(textString : String) : JJQuery; overload; external 'text';
 
       function ToggleClass(className : String) : JJQuery; external 'toggleClass';
+
+      function Trigger : JJQuery; overload; external 'trigger';
+      function Trigger(handler : procedure) : JJQuery; overload; external 'trigger';
+      function Trigger(handler : TJQueryEvent) : JJQuery; overload; external 'trigger';
+      function Trigger(handler : TJQueryProcEvent) : JJQuery; overload; external 'trigger';
+      function Trigger(textString : String) : JJQuery; overload; external 'trigger';
 
       function Val : Variant; overload; external 'val';
       function Val(value : Variant) : JJQuery; overload; external 'val';
