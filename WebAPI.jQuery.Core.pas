@@ -26,12 +26,19 @@ type
 
    JjqXHR = class external 'jqXHR'
 
+      Status : Integer; external 'status';
+      StatusText : String; external 'statusText';
+
       function Done(callback : TJQueryAjaxSimpleSuccess) : JjqXHR; overload; external 'done';
       function Done(callback : TJQueryAjaxSuccess) : JjqXHR; overload; external 'done';
+      function Done(callback : procedure) : JjqXHR; overload; external 'done';
 
       function Fail(callback : procedure) : JjqXHR; overload; external 'fail';
+      function Fail(callback : procedure (xhr : JjqXHR)) : JjqXHR; overload; external 'fail';
 
       function Always(callback : procedure) : JjqXHR; overload; external 'always';
+
+      procedure Abort; external 'abort';
 
    end;
 
@@ -49,6 +56,8 @@ type
 
       function After(content : String) : JJQuery; overload; external 'after';
       function After(content : JJQuery) : JJQuery; overload; external 'after';
+
+      function Ajax(url : String; options : Variant) : JjqXHR; overload; external 'ajax';
 
       function Animate(options : Variant) : JJQuery; overload; external 'animate';
 
@@ -75,6 +84,8 @@ type
       function Blur : JJQuery; overload; external 'blur';
       function Blur(handler : TJQueryEvent) : JJQuery; overload; external 'blur';
 
+      function Change(handler : procedure) : JJQuery; overload; external 'change';
+
       function Children(selector : String) : JJQuery; overload; external 'children';
       function Children : JJQuery; overload; external 'children';
 
@@ -86,6 +97,8 @@ type
       function Clone : JJQuery; overload; external 'clone';
       function Clone(withDataAndEvents : Boolean) : JJQuery; overload; external 'clone';
       function Clone(withDataAndEvents, deepWithDataAndEvents : Boolean) : JJQuery; overload; external 'clone';
+
+      function Closest(selector : String) : JJQuery; overload; external 'closest';
 
       function Contents : JJQuery; overload; external 'contents';
 
@@ -103,7 +116,8 @@ type
       function DblClick : JJQuery; overload; external 'dblclick';
       function DblClick(handler : TJQueryEvent) : JJQuery; overload; external 'dblclick';
 
-      function Detach(selector : String) : JJQuery; external 'detach';
+      function Detach : JJQuery; overload; external 'detach';
+      function Detach(selector : String) : JJQuery; overload; external 'detach';
 
       function Each(func : TJQueryElementFunction) : JJQuery; external 'each';
 
@@ -158,6 +172,12 @@ type
       function HTML : String; overload; external 'html';
       function HTML(htmlString : Variant) : JJQuery; overload; external 'html';
 
+      function Index : Integer; overload; external 'index';
+      function Index(element : Variant) : Integer; overload; external 'index';
+
+      function InnerHeight : Integer; overload; external 'innerHeight';
+      function InnerWidth : Integer; overload; external 'innerWidth';
+
       function InsertAfter(selector : String) : JJQuery; overload; external 'insertAfter';
       function InsertAfter(content : JJQuery) : JJQuery; overload; external 'insertAfter';
 
@@ -176,6 +196,9 @@ type
       function Load(url, data : String; success : TJQueryAjaxSimpleSuccess) : JJQuery; overload; external 'load';
 
       function On(event : String; callback : TJQueryEvent) : JJQuery; overload; external 'on';
+      function On(event : String; callback : procedure) : JJQuery; overload; external 'on';
+      function On(event, selector : String; callback : procedure) : JJQuery; overload; external 'on';
+      function On(event, selector : String; callback : TJQueryEvent) : JJQuery; overload; external 'on';
       function Off(event : String) : JJQuery; overload; external 'off';
 
       function Offset : TJQueryPosition; overload; external 'offset';
@@ -189,11 +212,22 @@ type
       function Parent : JJQuery; overload; external 'parent';
       function Parents(selector : String) : JJQuery; overload; external 'parents';
 
-      function Prev : JJQuery; external 'prev';
-      function Next : JJQuery; external 'next';
+      function Prev : JJQuery; overload; external 'prev';
+      function Prev(selector : String) : JJQuery; overload; external 'prev';
+      function Next : JJQuery; overload; external 'next';
+      function Next(selector : String) : JJQuery; overload; external 'next';
 
       function ParseHTML(html : String) : Variant; external 'parseHTML';
       function ParseXML(html : String) : Variant; external 'parseXML';
+
+      function Post(url : String) : JjqXHR; overload; external 'post';
+      function Post(url, data : String) : JjqXHR; overload; external 'post';
+      function Post(url : String; success : procedure) : JjqXHR; overload; external 'post';
+      function Post(url : String; success : TJQueryAjaxSuccess) : JjqXHR; overload; external 'post';
+      function Post(url : String; success : TJQueryAjaxSimpleSuccess) : JjqXHR; overload; external 'post';
+      function Post(url, data : String; success : TJQueryAjaxSuccess) : JjqXHR; overload; external 'post';
+      function Post(url, data : String; success : TJQueryAjaxSimpleSuccess) : JjqXHR; overload; external 'post';
+      function Post(url : String; data : JObject; success : TJQueryAjaxSimpleSuccess) : JjqXHR; overload; external 'post';
 
       function Prop(name : String) : Variant; overload; external 'prop';
       function Prop(name : String; value : Variant) : JJQuery; overload; external 'prop';
@@ -243,6 +277,8 @@ type
       function Trigger(handler : TJQueryEvent) : JJQuery; overload; external 'trigger';
       function Trigger(handler : TJQueryProcEvent) : JJQuery; overload; external 'trigger';
       function Trigger(textString : String) : JJQuery; overload; external 'trigger';
+
+      function Typ(v : Variant) : String; external 'type';
 
       function Val : Variant; overload; external 'val';
       function Val(value : Variant) : JJQuery; overload; external 'val';
