@@ -24,6 +24,7 @@ type
       constructor Create(); overload; external;
       constructor Create(millisecondsSinceEpoch : Float); overload; external;
 
+      function GetSeconds : Integer; external 'getSeconds';
       function GetMinutes : Integer; external 'getMinutes';
       function GetHours : Integer; external 'getHours';
 
@@ -62,3 +63,12 @@ function DecodeURI(s : String) : String; external 'decodeURI';
 function EncodeURIComponent(s : String) : String; external 'encodeURIComponent';
 function DecodeURIComponent(s : String) : String; external 'decodeURIComponent';
 
+function EscapeHTML(s : String) : String;
+
+implementation
+
+function EscapeHTML(s : String) : String;
+begin
+   Result := s.Replace('&', '&amp;').Replace('<', '&lt;').Replace('>', '&gt;')
+              .Replace("'", '&apos;').Replace('"', '&quot;');
+end;

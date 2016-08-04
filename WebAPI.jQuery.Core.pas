@@ -33,6 +33,8 @@ type
       function Done(callback : TJQueryAjaxSuccess) : JjqXHR; overload; external 'done';
       function Done(callback : procedure) : JjqXHR; overload; external 'done';
 
+      function Fail(callback : TJQueryAjaxSimpleSuccess) : JjqXHR; overload; external 'fail';
+      function Fail(callback : TJQueryAjaxSuccess) : JjqXHR; overload; external 'fail';
       function Fail(callback : procedure) : JjqXHR; overload; external 'fail';
       function Fail(callback : procedure (xhr : JjqXHR)) : JjqXHR; overload; external 'fail';
 
@@ -58,6 +60,8 @@ type
       function After(content : JJQuery) : JJQuery; overload; external 'after';
 
       function Ajax(url : String; options : Variant) : JjqXHR; overload; external 'ajax';
+      
+      function AjaxSetup(options : Variant) : JjqXHR; overload; external 'ajaxSetup';
 
       function Animate(options : Variant) : JJQuery; overload; external 'animate';
 
@@ -147,6 +151,7 @@ type
 
       function Focus : JJQuery; external 'focus';
 
+      function Get : array of Variant; overload; external 'get';
       function Get(url : String) : JjqXHR; overload; external 'get';
       function Get(url, data : String) : JjqXHR; overload; external 'get';
       function Get(url : String; success : procedure) : JjqXHR; overload; external 'get';
@@ -194,6 +199,10 @@ type
       function Load(url : String; success : TJQueryAjaxSimpleSuccess) : JJQuery; overload; external 'load';
       function Load(url : String; success : procedure) : JJQuery; overload; external 'load';
       function Load(url, data : String; success : TJQueryAjaxSimpleSuccess) : JJQuery; overload; external 'load';
+
+      function Map(callback : function : Variant) : JJQuery; external 'map';
+
+      function &Not(selector : String) : JJQuery; overload; external 'not';
 
       function On(event : String; callback : TJQueryEvent) : JJQuery; overload; external 'on';
       function On(event : String; callback : procedure) : JJQuery; overload; external 'on';
