@@ -23,6 +23,7 @@ type
 
       constructor Create(); overload; external;
       constructor Create(millisecondsSinceEpoch : Float); overload; external;
+      constructor Create(dateString : String); overload; external;
 
       function GetSeconds : Integer; external 'getSeconds';
       function GetMinutes : Integer; external 'getMinutes';
@@ -34,6 +35,8 @@ type
 
       function GetTime : Float; external 'getTime';
       class function Now : Float; external 'now';
+
+      class function Parse(s : String) : JDate; external 'parse';
 
    end;
 
@@ -49,6 +52,8 @@ function LocalStorage : Variant; external 'localStorage' property;
 function Event : Variant; external 'event' property;
 
 function ElementByID(id : String) : Variant; external 'document.getElementById';
+function QuerySelector(selector : String) : Variant; external 'document.querySelector';
+function QuerySelectorAll(selector : String) : array of Variant; external 'document.querySelectorAll';
 
 procedure Alert(msg : String); external 'alert';
 
@@ -56,6 +61,7 @@ function SetTimeout(proc : procedure; delayMilliseconds : Integer) : Integer; ex
 function SetInterval(proc : procedure; delayMilliseconds : Integer) : Integer; external 'setInterval';
 procedure ClearTimeout(timeoutId : Integer); external 'clearTimeout';
 procedure ClearInterval(intervalId : Integer); external 'clearTimeout';
+procedure RequestAnimationFrame(proc : procedure); external 'requestAnimationFrame';
 
 function EncodeURI(s : String) : String; external 'encodeURI';
 function DecodeURI(s : String) : String; external 'decodeURI';
@@ -65,10 +71,18 @@ function DecodeURIComponent(s : String) : String; external 'decodeURIComponent';
 
 function EscapeHTML(s : String) : String;
 
+function StrToUTF8(s : String) : String;
+
 implementation
 
 function EscapeHTML(s : String) : String;
 begin
-   Result := s.Replace('&', '&amp;').Replace('<', '&lt;').Replace('>', '&gt;')
-              .Replace("'", '&apos;').Replace('"', '&quot;');
+   Result := s.ToHtml;
 end;
+
+function Unescape(s : String) : String; external 'unescape';
+function StrToUTF8(s: String): String;
+begin
+   Result := Unescape(EncodeURIComponent(s));
+end;
+

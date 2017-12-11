@@ -2,6 +2,8 @@
 
 interface
 
+uses WebAPI;
+
 type
    JArrayBuffer = class external 'ArrayBuffer'
       public
@@ -107,7 +109,7 @@ type
    end;
 
 
-   JDataView = class external (JArrayBufferView)
+   JDataView = class external 'DataView' (JArrayBufferView)
       public
 
          constructor Create(buffer : JArrayBuffer; byteOffset, byteLength : Integer);
@@ -150,3 +152,33 @@ type
          procedure setFloat32(byteOffset : Integer; value : Float; littleEndian : Boolean);
          procedure setFloat64(byteOffset : Integer; value : Float; littleEndian : Boolean);
    end;
+
+function StringToUTF8Bytes(s : String) : JUint8Array;
+
+function BytesToBase64(bytes : JUint8Array) : String;
+function BytesToHex(bytes : JUint8Array) : String;
+
+implementation
+
+function StringToUTF8Bytes(s: String): JUint8Array;
+begin
+   s := StrToUTF8(s);
+   Result := new JUint8Array(s.Length);
+   for var i := 0 to s.Length-1 do
+      Result[i] := Ord(s[i+1]);
+end;
+
+function BytesToBase64(bytes : JUint8Array) : String;
+begin
+   var b := '';
+   for var i := 0 to bytes.byteLength-1 do
+      b += Chr(bytes[i]);
+   Result := Window.btoa(b);
+end;
+
+function BytesToHex(bytes: JUint8Array): String;
+begin
+   for var i := 0 to bytes.byteLength-1 do
+      Result += IntToHex(bytes[i], 2);
+end;
+

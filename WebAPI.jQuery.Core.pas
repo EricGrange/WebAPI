@@ -28,6 +28,7 @@ type
 
       Status : Integer; external 'status';
       StatusText : String; external 'statusText';
+      ResponseText : String; external 'responseText';
 
       function Done(callback : TJQueryAjaxSimpleSuccess) : JjqXHR; overload; external 'done';
       function Done(callback : TJQueryAjaxSuccess) : JjqXHR; overload; external 'done';
@@ -236,6 +237,7 @@ type
       function Post(url : String; success : TJQueryAjaxSimpleSuccess) : JjqXHR; overload; external 'post';
       function Post(url, data : String; success : TJQueryAjaxSuccess) : JjqXHR; overload; external 'post';
       function Post(url, data : String; success : TJQueryAjaxSimpleSuccess) : JjqXHR; overload; external 'post';
+      function Post(url : String; data : JObject) : JjqXHR; overload; external 'post';
       function Post(url : String; data : JObject; success : TJQueryAjaxSimpleSuccess) : JjqXHR; overload; external 'post';
 
       function Prop(name : String) : Variant; overload; external 'prop';
@@ -253,7 +255,6 @@ type
 
       function RemoveClass(name : String) : JJQuery; external 'removeClass';
 
-      function ReplaceWith : String; overload; external 'replaceWith';
       function ReplaceWith(htmlString : Variant) : JJQuery; overload; external 'replaceWith';
 
       function Select : JJQuery; external 'select';

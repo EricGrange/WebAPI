@@ -2,7 +2,7 @@
 
 uses WebAPI;
 
-function CopyTextToClipboard(const text : String) : Boolean;
+function CopyTextToClipboard(const text : String; container : Variant = nil) : Boolean;
 begin
    var textArea := Document.createElement('textarea');
    var style := textArea.style;
@@ -16,11 +16,15 @@ begin
 
    textArea.value := text;
 
-   Document.body.appendChild(textArea);
+   if container = nil then begin
+      container := QuerySelector('.modal .in') ?? Document.body;
+   end;
+
+   container.appendChild(textArea);
    try
       textArea.select();
       Result := Document.execCommand('copy');
    finally
-      Document.body.removeChild(textArea);
+      container.removeChild(textArea);
    end;
 end;

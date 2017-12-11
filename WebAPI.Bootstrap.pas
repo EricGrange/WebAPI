@@ -11,4 +11,8 @@ type
 
       function Tooltip(options : Variant) : JJQuery; external 'tooltip';
 
+      function Tab(command : String) : JJQuery; external 'tab';
+
+      function Dropdown : JJQuery; external 'dropdown';
+
    end;
