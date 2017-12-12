@@ -16,9 +16,7 @@ begin
 
    textArea.value := text;
 
-   if container = nil then begin
-      container := QuerySelector('.modal .in') ?? Document.body;
-   end;
+   container := container ?? QuerySelector('.modal.in') ?? Document.body;
 
    container.appendChild(textArea);
    try
