@@ -175,6 +175,9 @@ type
       function Hide(duration : Integer) : JJQuery; overload; external 'hide';
       function Hide(duration : Integer; complete : procedure) : JJQuery; overload; external 'hide';
 
+      function Hover(handlerIn, handlerOut : TJQueryProcEvent) : JJQuery; overload; external 'hover';
+      function Hover(handlerIn, handlerOut : procedure) : JJQuery; overload; external 'hover';
+
       function HTML : String; overload; external 'html';
       function HTML(htmlString : Variant) : JJQuery; overload; external 'html';
 
@@ -206,6 +209,7 @@ type
       function &Not(selector : String) : JJQuery; overload; external 'not';
 
       function On(event : String; callback : TJQueryEvent) : JJQuery; overload; external 'on';
+      function On(event : String; callback : TJQueryProcEvent) : JJQuery; overload; external 'on';
       function On(event : String; callback : procedure) : JJQuery; overload; external 'on';
       function On(event, selector : String; callback : procedure) : JJQuery; overload; external 'on';
       function On(event, selector : String; callback : TJQueryEvent) : JJQuery; overload; external 'on';
