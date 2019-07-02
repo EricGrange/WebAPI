@@ -13,6 +13,7 @@ type
 
       function Tab(command : String) : JJQuery; external 'tab';
 
-      function Dropdown : JJQuery; external 'dropdown';
+      function Dropdown : JJQuery; overload; external 'dropdown';
+      function Dropdown(action : String) : JJQuery; overload; external 'dropdown';
 
    end;

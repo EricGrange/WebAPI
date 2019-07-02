@@ -83,6 +83,7 @@ type
 
       function Bind(eventType : String; handler : procedure) : JJQuery; overload; external 'bind';
       function Bind(eventType : String; handler : TJQueryEvent) : JJQuery; overload; external 'bind';
+      function Bind(eventType : String; handler : TJQueryProcEvent) : JJQuery; overload; external 'bind';
       function Bind(eventType : String; eventData : Variant; handler : TJQueryEvent) : JJQuery; overload; external 'bind';
       function Bind(eventType : String; eventData : Variant; preventBubble : Boolean) : JJQuery; overload; external 'bind';
 
@@ -165,6 +166,7 @@ type
       function GetScript(url : String; success : procedure) : JjqXHR; overload; external 'getScript';
 
       function Has(selector : String) : JJQuery; external 'has';
+      function Match(selector : String) : Boolean; external 'is';
 
       function HasClass(className : String) : Boolean; external 'hasClass';
 
@@ -291,6 +293,13 @@ type
       function Trigger(handler : TJQueryEvent) : JJQuery; overload; external 'trigger';
       function Trigger(handler : TJQueryProcEvent) : JJQuery; overload; external 'trigger';
       function Trigger(textString : String) : JJQuery; overload; external 'trigger';
+
+      function TriggerHandler : JJQuery; overload; external 'triggerHandler';
+      function TriggerHandler(handler : procedure) : JJQuery; overload; external 'triggerHandler';
+      function TriggerHandler(handler : TJQueryEvent) : JJQuery; overload; external 'triggerHandler';
+      function TriggerHandler(handler : TJQueryProcEvent) : JJQuery; overload; external 'triggerHandler';
+      function TriggerHandler(textString : String) : JJQuery; overload; external 'triggerHandler';
+      function TriggerHandler(textString : String; data : Variant) : JJQuery; overload; external 'triggerHandler';
 
       function Typ(v : Variant) : String; external 'type';
 

@@ -7,7 +7,8 @@ type
    JJSON = class external
 
       function Parse(s : String) : Variant; external 'parse';
-      function Stringify(v : Variant) : String; external 'stringify';
+      function Stringify(v : Variant) : String; overload; external 'stringify';
+      function Stringify(v, replacer, space : Variant) : String; overload; external 'stringify';
 
    end;
 
@@ -35,6 +36,7 @@ type
 
       function GetTime : Float; external 'getTime';
       class function Now : Float; external 'now';
+      function GetTimezoneOffset : Float; external 'getTimezoneOffset';
 
       class function Parse(s : String) : JDate; external 'parse';
 
@@ -46,6 +48,7 @@ function This : Variant; external 'this' property;
 function Arguments : Variant; external 'arguments' property;
 function Document : Variant; external 'document' property;
 function Window : Variant; external 'window' property;
+function Navigator : Variant; external 'navigator' property;
 function Console : Variant; external 'console' property;
 function Math : Variant; external 'Math' property;
 function LocalStorage : Variant; external 'localStorage' property;
