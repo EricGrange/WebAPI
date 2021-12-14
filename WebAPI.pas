@@ -53,6 +53,7 @@ function Console : Variant; external 'console' property;
 function Math : Variant; external 'Math' property;
 function LocalStorage : Variant; external 'localStorage' property;
 function Event : Variant; external 'event' property;
+function DevicePixelRatio : Float; external 'devicePixelRatio' property;
 
 function ElementByID(id : String) : Variant; external 'document.getElementById';
 function QuerySelector(selector : String) : Variant; external 'document.querySelector';

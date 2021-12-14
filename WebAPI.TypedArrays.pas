@@ -12,6 +12,10 @@ type
          constructor Create(aLength : Integer);
    end;
 
+   JArrayBufferPromise = class external 'Promise'
+      procedure &Then(callback : procedure (buffer : JArrayBuffer)); external 'then';
+   end;
+
    JArrayBufferView = class external
       public
          buffer : JArrayBuffer; // Read Only
@@ -30,6 +34,7 @@ type
          constructor Create(aLength : Integer); overload;
          constructor Create(aArray : JTypedArray); overload;
          constructor Create(buffer : JArrayBuffer; byteOffset, aLength : Integer); overload;
+         constructor Create(buffer : JArrayBuffer); overload;
    end;
 
    JIntegerTypedArray = class abstract external (JTypedArray)
