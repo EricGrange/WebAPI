@@ -63,8 +63,9 @@ procedure Alert(msg : String); external 'alert';
 function SetTimeout(proc : procedure; delayMilliseconds : Integer) : Integer; external 'setTimeout';
 function SetInterval(proc : procedure; delayMilliseconds : Integer) : Integer; external 'setInterval';
 procedure ClearTimeout(timeoutId : Integer); external 'clearTimeout';
-procedure ClearInterval(intervalId : Integer); external 'clearTimeout';
+procedure ClearInterval(intervalId : Integer); external 'clearInterval';
 procedure RequestAnimationFrame(proc : procedure); external 'requestAnimationFrame';
+function PerformanceNow : Float; external 'performance.now';
 
 function EncodeURI(s : String) : String; external 'encodeURI';
 function DecodeURI(s : String) : String; external 'decodeURI';

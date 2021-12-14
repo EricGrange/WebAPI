@@ -54,7 +54,7 @@ type
       function AddBack : JJQuery; overload; external 'addBack';
       function AddBack(selector : String) : JJQuery; overload; external 'addBack';
 
-      function AddClass(classNames : String) : JJQuery; external 'addClass';
+      function AddClass(classNames : String) : JJQuery; overload; external 'addClass';
       function AddClass(func : TJQueryAddClassFunction) : JJQuery; overload; external 'addClass';
 
       function After(content : String) : JJQuery; overload; external 'after';
@@ -110,6 +110,7 @@ type
 
       function CSS(name : String) : String; overload; external 'css';
       function CSS(name : String; value : Variant) : JJQuery; overload; external 'css';
+      function CSS(nameValue : Variant) : JJQuery; overload; external 'css';
 
       function Data(key : String) : Variant; overload; external 'data';
       function Data(key : String; value : Variant) : JJQuery; overload; external 'data';
@@ -215,6 +216,7 @@ type
       function On(event : String; callback : procedure) : JJQuery; overload; external 'on';
       function On(event, selector : String; callback : procedure) : JJQuery; overload; external 'on';
       function On(event, selector : String; callback : TJQueryEvent) : JJQuery; overload; external 'on';
+      function Off : JJQuery; overload; external 'off';
       function Off(event : String) : JJQuery; overload; external 'off';
 
       function Offset : TJQueryPosition; overload; external 'offset';
