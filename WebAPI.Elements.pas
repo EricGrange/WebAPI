@@ -33,6 +33,7 @@ type
 
       ClassList : JDOMTokenList; external 'classList';
       InnerHTML : String; external 'innerHTML';
+      ParentElement : JElement; external 'parentElement';
       Style : Variant; external 'style';
       TextContent : String; external 'textContent';
       Value : String; external 'value';

@@ -47,25 +47,31 @@ type
 
    JElementHelper = helper for JElement
 
-      procedure AppendHTML(html : String);
-      procedure PrependHTML(html : String);
+      function AppendHTML(html : String) : JElement;
+      function PrependHTML(html : String) : JElement;
 
-      procedure Click(callback : procedure);
-      procedure On(eventTypes : String; callback : procedure);
+      function Click(callback : procedure) : JElement;
+      function On(eventTypes : String; callback : procedure) : JElement;
 
    end;
 
    JElementsHelper = helper for JElements
 
-      procedure Click(callback : procedure);
-      procedure On(eventTypes : String; callback : procedure);
+      function Click(callback : procedure) : JElements;
+      function On(eventTypes : String; callback : procedure) : JElements;
+
+      function AddClass(aClass : String) : JElements;
+      function RemoveClass(aClass : String) : JElements;
 
    end;
 
    JResponse = class external 'Response'
 
-      function JSON : JPromise<Variant>; external 'json';
       Ok : Boolean; external 'ok';
+      Status : Integer; external 'status';
+      
+      function JSON : JPromise<Variant>; external 'json';
+      function Text : JPromise<String>; external 'text';
 
    end;
 
@@ -102,8 +108,10 @@ function StrToUTF8(s : String): String;
 
 function Fetch(res : String) : JPromise<JResponse>; overload; external 'fetch';
 function Fetch(res : String; init : Variant) : JPromise<JResponse>; overload; external 'fetch';
+
 procedure FetchJSON(res : String; success : procedure (data : Variant); fail : procedure (r : JResponse)); overload;
 procedure FetchJSON(res : String; success : procedure (data : Variant)); overload;
+procedure PostJSON(res : String; data : Variant; success : procedure (data : Variant); fail : procedure (r : JResponse));
 
 implementation
 
@@ -113,59 +121,103 @@ begin
    Result := Unescape(EncodeURIComponent(s));
 end;
 
+var vFetchJSONInit : Variant := class credentials := 'same-origin' end;
+procedure FetchJSONSetInit(init: Variant);
+begin
+   vFetchJSONInit := init;
+end;
+
 procedure FetchJSON(res: String; success: procedure (data: Variant); fail: procedure (r: JResponse));
 begin
-   var f := Fetch(res);
-   f.&Then(lambda (r : JResponse)
+   Fetch(res, class
+      credentials := 'same-origin'
+   end).&Then(lambda (r : JResponse)
       if r.Ok then
          r.JSON.&Then(success)
       else fail(r)
-   end);
-   f.Catch(fail);
+   end).Catch(fail);
 end;
 
 procedure FetchJSON(res: String; success: procedure (data: Variant));
 begin
-   Fetch(res).&Then(lambda (r : JResponse)
+   Fetch(res, class
+      credentials := 'same-origin'
+   end).&Then(lambda (r : JResponse)
       if r.Ok then
          r.JSON.&Then(success);
    end);
 end;
 
+procedure PostJSON(res: String; data: Variant; success: procedure (data: Variant); fail: procedure (r: JResponse));
+begin
+   Fetch(res, class
+      'method' := 'POST';
+      headers := class
+         'Content-Type' := 'application/json';
+      end;
+      credentials := 'same-origin';
+      body := JSON.Stringify(data);
+   end).&Then(lambda (r : JResponse)
+      if r.Ok then
+         r.JSON.&Then(success)
+      else fail(r)
+   end).Catch(fail);
+end;
+
 // JElementHelper
 
-procedure JElementHelper.PrependHTML(html: String);
+function JElementHelper.PrependHTML(html: String) : JElement;
 begin
-   Self.InsertAdjacentHTML('afterbegin', html);
+   InsertAdjacentHTML('afterbegin', html);
+   Result := Self;
 end;
 
-procedure JElementHelper.AppendHTML(html: String);
+function JElementHelper.AppendHTML(html: String) : JElement;
 begin
-   Self.InsertAdjacentHTML('beforeend', html);
+   InsertAdjacentHTML('beforeend', html);
+   Result := Self;
 end;
 
-procedure JElementHelper.Click(callback: procedure);
+function JElementHelper.Click(callback: procedure) : JElement;
 begin
    AddEventListener('click', callback);
+   Result := Self;
 end;
 
-procedure JElementHelper.On(eventTypes: String; callback: procedure  );
+function JElementHelper.On(eventTypes: String; callback: procedure) : JElement;
 begin
    for var typ in eventTypes.Split(' ') do
       AddEventListener(typ, callback);
+   Result := Self;
 end;
 
 // JElementsHelper
 
-procedure JElementsHelper.Click(callback: procedure);
+function JElementsHelper.Click(callback: procedure): JElements;
 begin
    On('click', callback);
+   Result := Self;
 end;
 
-procedure JElementsHelper.On(eventTypes: String; callback: procedure  );
+function JElementsHelper.On(eventTypes: String; callback: procedure): JElements;
 begin
    for var typ in eventTypes.Split(' ') do
       for var i := 0 to Self.High do
          Self[i].AddEventListener(typ, callback);
+   Result := Self;
+end;
+
+function JElementsHelper.AddClass(aClass: String): JElements;
+begin
+   for var i := 0 to Self.High do
+      Self[i].ClassList.Add(aClass);
+   Result := Self;
+end;
+
+function JElementsHelper.RemoveClass(aClass: String): JElements;
+begin
+   for var i := 0 to Self.High do
+      Self[i].ClassList.Remove(aClass);
+   Result := Self;
 end;
 
