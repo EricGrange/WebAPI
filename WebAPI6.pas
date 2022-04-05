@@ -58,10 +58,15 @@ type
    JElementsHelper = helper for JElements
 
       function Click(callback : procedure) : JElements;
-      function On(eventTypes : String; callback : procedure) : JElements;
+      function On(eventTypes : String; callback : procedure) : JElements; overload;
+      function On(eventTypes : String; callback : procedure (event : Variant)) : JElements; overload;
 
       function AddClass(aClass : String) : JElements;
       function RemoveClass(aClass : String) : JElements;
+      function CSS(styles : Variant) : JElements;
+
+      procedure SetAttribute(name, value : String);
+      property Attr[name : String] : String write SetAttribute;
 
    end;
 
@@ -69,9 +74,24 @@ type
 
       Ok : Boolean; external 'ok';
       Status : Integer; external 'status';
-      
+      StatusText : Integer; external 'statusText';
+
       function JSON : JPromise<Variant>; external 'json';
       function Text : JPromise<String>; external 'text';
+
+   end;
+
+   JFormData = class external 'FormData'
+
+      constructor Create();
+
+      procedure Append(name, value : String); overload; external 'append';
+
+   end;
+
+   JURLSearchParams = class external 'URLSearchParams'
+
+      constructor Create(data : Variant);
 
    end;
 
@@ -79,7 +99,7 @@ function JSON : JJSON; external 'JSON' property;
 
 function This : Variant; external 'this' property;
 function Arguments : Variant; external 'arguments' property;
-function Document : JElement; external 'document' property;
+function Document : Variant; external 'document' property;
 function Window : Variant; external 'window' property;
 function Console : Variant; external 'console' property;
 function Math : Variant; external 'Math' property;
@@ -111,7 +131,10 @@ function Fetch(res : String; init : Variant) : JPromise<JResponse>; overload; ex
 
 procedure FetchJSON(res : String; success : procedure (data : Variant); fail : procedure (r : JResponse)); overload;
 procedure FetchJSON(res : String; success : procedure (data : Variant)); overload;
+procedure PostRawBody(res, dataType : String; data : Variant; success : procedure (data : Variant); fail : procedure (r : JResponse));
 procedure PostJSON(res : String; data : Variant; success : procedure (data : Variant); fail : procedure (r : JResponse));
+procedure PostFormData(res : String; data : Variant; success : procedure (data : Variant); fail : procedure (r : JResponse));
+procedure PostURLEncoded(res : String; data : Variant; success : procedure (data : Variant); fail : procedure (r : JResponse));
 
 implementation
 
@@ -119,12 +142,6 @@ function Unescape(s : String) : String; external 'unescape';
 function StrToUTF8(s: String): String;
 begin
    Result := Unescape(EncodeURIComponent(s));
-end;
-
-var vFetchJSONInit : Variant := class credentials := 'same-origin' end;
-procedure FetchJSONSetInit(init: Variant);
-begin
-   vFetchJSONInit := init;
 end;
 
 procedure FetchJSON(res: String; success: procedure (data: Variant); fail: procedure (r: JResponse));
@@ -148,20 +165,40 @@ begin
    end);
 end;
 
-procedure PostJSON(res: String; data: Variant; success: procedure (data: Variant); fail: procedure (r: JResponse));
+procedure PostRawBody(res, dataType: String; data: Variant; success: procedure (data: Variant); fail: procedure (r: JResponse));
 begin
-   Fetch(res, class
+   var init : Variant = class
       'method' := 'POST';
-      headers := class
-         'Content-Type' := 'application/json';
-      end;
       credentials := 'same-origin';
-      body := JSON.Stringify(data);
-   end).&Then(lambda (r : JResponse)
+      body := data;
+   end;
+   if dataType <> '' then
+      init.headers := class
+         'Content-Type' := dataType;
+      end;
+   Fetch(res, init).&Then(lambda (r : JResponse)
       if r.Ok then
          r.JSON.&Then(success)
       else fail(r)
    end).Catch(fail);
+end;
+
+procedure PostJSON(res: String; data: Variant; success: procedure (data: Variant); fail: procedure (r: JResponse));
+begin
+   PostRawBody(res, 'application/json', JSON.Stringify(data), success, fail);
+end;
+
+procedure PostFormData(res: String; data: Variant; success: procedure (data: Variant); fail: procedure (r: JResponse));
+begin
+   var fd := new JFormData;
+   for var k in data do
+      fd.Append(k, JSON.Stringify(data[k]));
+   PostRawBody(res, '', fd, success, fail);
+end;
+
+procedure PostURLEncoded(res: String; data: Variant; success: procedure (data: Variant); fail: procedure (r: JResponse));
+begin
+   PostRawBody(res, 'application/x-www-form-urlencoded', new JURLSearchParams(data), success, fail);
 end;
 
 // JElementHelper
@@ -180,14 +217,14 @@ end;
 
 function JElementHelper.Click(callback: procedure) : JElement;
 begin
-   AddEventListener('click', callback);
+   AddEventListener('click', @callback);
    Result := Self;
 end;
 
-function JElementHelper.On(eventTypes: String; callback: procedure) : JElement;
+function JElementHelper.On(eventTypes: String; callback: Variant) : JElement;
 begin
    for var typ in eventTypes.Split(' ') do
-      AddEventListener(typ, callback);
+      AddEventListener(typ, @callback);
    Result := Self;
 end;
 
@@ -195,7 +232,7 @@ end;
 
 function JElementsHelper.Click(callback: procedure): JElements;
 begin
-   On('click', callback);
+   On('click', @callback);
    Result := Self;
 end;
 
@@ -203,7 +240,15 @@ function JElementsHelper.On(eventTypes: String; callback: procedure): JElements;
 begin
    for var typ in eventTypes.Split(' ') do
       for var i := 0 to Self.High do
-         Self[i].AddEventListener(typ, callback);
+         Self[i].AddEventListener(typ, @callback);
+   Result := Self;
+end;
+
+function JElementsHelper.On(eventTypes: String; callback: procedure (event : Variant)): JElements;
+begin
+   for var typ in eventTypes.Split(' ') do
+      for var i := 0 to Self.High do
+         Self[i].AddEventListener(typ, @callback);
    Result := Self;
 end;
 
@@ -220,4 +265,21 @@ begin
       Self[i].ClassList.Remove(aClass);
    Result := Self;
 end;
+
+function JElementsHelper.CSS(styles: Variant): JElements;
+begin
+   for var i := 0 to Self.High do begin
+      var s := Self[i].Style;
+      for var k in styles do
+         s.setProperty(k, styles[k]);
+   end;
+   Result := Self;
+end;
+
+procedure JElementsHelper.SetAttribute(name: String; value: String);
+begin
+   for var i := 0 to Self.High do
+      Self[i].SetAttribute(name, value);
+end;
+
 

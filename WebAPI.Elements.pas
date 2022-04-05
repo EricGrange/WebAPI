@@ -9,6 +9,7 @@ type
       procedure Add(token : String); external 'add';
       procedure Remove(token : String); external 'remove';
       procedure Toggle(token : String); external 'toggle';
+      function Contains(token : String) : Boolean; external 'contains';
 
    end;
 
@@ -32,13 +33,17 @@ type
       procedure Remove(); external 'remove';
 
       ClassList : JDOMTokenList; external 'classList';
+      ClassName : String; external 'className';
       InnerHTML : String; external 'innerHTML';
       ParentElement : JElement; external 'parentElement';
       Style : Variant; external 'style';
       TextContent : String; external 'textContent';
       Value : String; external 'value';
+      Checked : Variant; external 'checked';
 
       procedure AddEventListener(eventType : String; callback : procedure); overload; external 'addEventListener';
+      procedure AddEventListener(eventType : String; callback : procedure (event : Variant)); overload; external 'addEventListener';
+      procedure Focus; external 'focus';
 
    end;
 
