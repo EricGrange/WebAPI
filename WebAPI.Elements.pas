@@ -41,8 +41,8 @@ type
       Value : String; external 'value';
       Checked : Variant; external 'checked';
 
-      procedure AddEventListener(eventType : String; callback : procedure); overload; external 'addEventListener';
-      procedure AddEventListener(eventType : String; callback : procedure (event : Variant)); overload; external 'addEventListener';
+      procedure AddEventListener(eventType : String; callback : procedure; useCapture : Boolean); overload; external 'addEventListener';
+      procedure AddEventListener(eventType : String; callback : procedure (event : Variant); useCapture : Boolean); overload; external 'addEventListener';
       procedure Focus; external 'focus';
 
    end;

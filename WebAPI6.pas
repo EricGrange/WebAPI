@@ -217,14 +217,14 @@ end;
 
 function JElementHelper.Click(callback: procedure) : JElement;
 begin
-   AddEventListener('click', @callback);
+   AddEventListener('click', @callback, True);
    Result := Self;
 end;
 
 function JElementHelper.On(eventTypes: String; callback: Variant) : JElement;
 begin
    for var typ in eventTypes.Split(' ') do
-      AddEventListener(typ, @callback);
+      AddEventListener(typ, @callback, True);
    Result := Self;
 end;
 
@@ -240,7 +240,7 @@ function JElementsHelper.On(eventTypes: String; callback: procedure): JElements;
 begin
    for var typ in eventTypes.Split(' ') do
       for var i := 0 to Self.High do
-         Self[i].AddEventListener(typ, @callback);
+         Self[i].AddEventListener(typ, @callback, True);
    Result := Self;
 end;
 
@@ -248,7 +248,7 @@ function JElementsHelper.On(eventTypes: String; callback: procedure (event : Var
 begin
    for var typ in eventTypes.Split(' ') do
       for var i := 0 to Self.High do
-         Self[i].AddEventListener(typ, @callback);
+         Self[i].AddEventListener(typ, @callback, True);
    Result := Self;
 end;
 
