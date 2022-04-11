@@ -18,7 +18,8 @@ type
 
       function Click(callback : procedure) : JElement; overload;
       function Click(callback : procedure (event : Variant)) : JElement; overload;
-      function On(eventTypes : String; callback : procedure) : JElement;
+      function On(eventTypes : String; callback : procedure) : JElement; overload;
+      function On(eventTypes : String; callback : procedure (event : Variant)) : JElement; overload;
 
       function AddClass(aClass : String) : JElement;
       function RemoveClass(aClass : String) : JElement;
@@ -94,13 +95,19 @@ begin
    Result := Self;
 end;
 
-function JElementHelper.On(eventTypes: String; callback: Variant) : JElement;
+function JElementHelper.On(eventTypes: String; callback: procedure) : JElement;
 begin
    for var typ in eventTypes.Split(' ') do
       AddEventListener(typ, @callback, True);
    Result := Self;
 end;
 
+function JElementHelper.On(eventTypes: String; callback: procedure (event : Variant)): JElement;
+begin
+   for var typ in eventTypes.Split(' ') do
+      AddEventListener(typ, @callback, True);
+   Result := Self;
+end;
 
 function JElementHelper.AddClass(aClass: String): JElement;
 begin
@@ -193,5 +200,4 @@ begin
    for var i := 0 to Self.High do
       Self[i].SetAttribute(name, value);
 end;
-
 
