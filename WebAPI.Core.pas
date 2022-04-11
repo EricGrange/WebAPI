@@ -42,6 +42,7 @@ function Event : Variant; external 'event' property;
 function ElementByID(id : String) : JElement; external 'document.getElementById';
 function QuerySelector(selector : String) : JElement; external 'document.querySelector';
 function QuerySelectorAll(selector : String) : array of JElement; external 'document.querySelectorAll';
+function GetComputedStyle(element : JElement) : Variant; external 'getComputedStyle';
 
 procedure Alert(msg : String); external 'alert';
 
