@@ -2,7 +2,7 @@
 
 interface
 
-uses WebAPI.Elements;
+uses WebAPI.Elements, WebAPI.Core;
 
 type
 
@@ -20,9 +20,15 @@ type
       function Click(callback : procedure (event : Variant)) : JElement; overload;
       function On(eventTypes : String; callback : procedure) : JElement;
 
+      function AddClass(aClass : String) : JElement;
+      function RemoveClass(aClass : String) : JElement;
+
+      function FadeOut(durationMSec : Integer; callback : procedure) : JElement;
    end;
 
    JElementsHelper = helper for JElements
+
+      procedure Each(callback : procedure (element : JElement));
 
       function Click(callback : procedure) : JElements; overload;
       function Click(callback : procedure (event : Variant)) : JElements; overload;
@@ -95,7 +101,42 @@ begin
    Result := Self;
 end;
 
+
+function JElementHelper.AddClass(aClass: String): JElement;
+begin
+   ClassList.Add(aClass);
+   Result := Self;
+end;
+
+function JElementHelper.RemoveClass(aClass: String): JElement;
+begin
+   ClassList.Remove(aClass);
+   Result := Self;
+end;
+
+function JElementHelper.FadeOut(durationMSec: Integer; callback: procedure  ): JElement;
+begin
+   var sv = Variant(Self);
+   if sv._fx then ClearTimeout(sv._fx);
+   Self.Style.transition := 'none';
+   Self.Style.opacity := 1;
+   Self.Style.transition := '.2s';
+   Self.Style.opacity := 0;
+   sv._fx := SetTimeout(
+      lambda
+         sv._fx := 0;
+         callback;
+      end, durationMSec
+   );
+   Result := Self;
+end;
+
 // JElementsHelper
+
+procedure JElementsHelper.Each(callback: procedure (element: JElement));
+begin
+   Variant(Self).forEach(@callback);
+end;
 
 function JElementsHelper.Click(callback: procedure): JElements;
 begin
@@ -152,4 +193,5 @@ begin
    for var i := 0 to Self.High do
       Self[i].SetAttribute(name, value);
 end;
+
 
