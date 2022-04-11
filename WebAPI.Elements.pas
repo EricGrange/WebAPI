@@ -21,6 +21,8 @@ type
       procedure Append(element : JElement); overload; external 'append';
       procedure Append(element : array of JElement); overload; external 'append';
 
+      function Closest(selectors : String) : JElement; external 'closest';
+
       procedure InsertAdjacentHTML(position, html : String); external 'insertAdjacentHTML';
 
       function GetAttribute(name : String) : String; external 'getAttribute';
@@ -35,6 +37,7 @@ type
       ClassList : JDOMTokenList; external 'classList';
       ClassName : String; external 'className';
       InnerHTML : String; external 'innerHTML';
+      InnerText : String; external 'innerText';
       ParentElement : JElement; external 'parentElement';
       Style : Variant; external 'style';
       TextContent : String; external 'textContent';

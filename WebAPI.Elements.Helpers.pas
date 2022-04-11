@@ -1,0 +1,155 @@
+﻿unit WebAPI.Elements.Helpers;
+
+interface
+
+uses WebAPI.Elements;
+
+type
+
+   JElementHelper = helper for JElement
+
+      function AppendHTML(html : String) : JElement;
+      function PrependHTML(html : String) : JElement;
+
+      function HTML : String; overload;
+      function HTML(htmlContent : String) : JElement; overload;
+      function Text : String; overload;
+      function Text(txt : String) : JElement; overload;
+
+      function Click(callback : procedure) : JElement; overload;
+      function Click(callback : procedure (event : Variant)) : JElement; overload;
+      function On(eventTypes : String; callback : procedure) : JElement;
+
+   end;
+
+   JElementsHelper = helper for JElements
+
+      function Click(callback : procedure) : JElements; overload;
+      function Click(callback : procedure (event : Variant)) : JElements; overload;
+      function On(eventTypes : String; callback : procedure) : JElements; overload;
+      function On(eventTypes : String; callback : procedure (event : Variant)) : JElements; overload;
+
+      function AddClass(aClass : String) : JElements;
+      function RemoveClass(aClass : String) : JElements;
+      function CSS(styles : Variant) : JElements;
+
+      procedure SetAttribute(name, value : String);
+      property Attr[name : String] : String write SetAttribute;
+
+   end;
+
+implementation
+
+// JElementHelper
+
+function JElementHelper.PrependHTML(html: String) : JElement;
+begin
+   InsertAdjacentHTML('afterbegin', html);
+   Result := Self;
+end;
+
+function JElementHelper.AppendHTML(html: String) : JElement;
+begin
+   InsertAdjacentHTML('beforeend', html);
+   Result := Self;
+end;
+
+function JElementHelper.HTML : String;
+begin
+   Result := InnerHTML;
+end;
+
+function JElementHelper.HTML(htmlContent: String): JElement;
+begin
+   InnerHTML := htmlContent;
+   Result := Self;
+end;
+
+function JElementHelper.Text : String;
+begin
+   Result := TextContent;
+end;
+
+function JElementHelper.Text(txt: String): JElement;
+begin
+   TextContent := txt;
+   Result := Self;
+end;
+
+function JElementHelper.Click(callback: procedure) : JElement;
+begin
+   AddEventListener('click', @callback, True);
+   Result := Self;
+end;
+
+function JElementHelper.Click(callback: procedure(event : Variant)) : JElement;
+begin
+   AddEventListener('click', @callback, True);
+   Result := Self;
+end;
+
+function JElementHelper.On(eventTypes: String; callback: Variant) : JElement;
+begin
+   for var typ in eventTypes.Split(' ') do
+      AddEventListener(typ, @callback, True);
+   Result := Self;
+end;
+
+// JElementsHelper
+
+function JElementsHelper.Click(callback: procedure): JElements;
+begin
+   Result := On('click', @callback);
+end;
+
+function JElementsHelper.Click(callback: procedure (event: Variant)): JElements;
+begin
+   Result := On('click', @callback);
+end;
+
+function JElementsHelper.On(eventTypes: String; callback: procedure): JElements;
+begin
+   for var typ in eventTypes.Split(' ') do
+      for var i := 0 to Self.High do
+         Self[i].AddEventListener(typ, @callback, True);
+   Result := Self;
+end;
+
+function JElementsHelper.On(eventTypes: String; callback: procedure (event : Variant)): JElements;
+begin
+   for var typ in eventTypes.Split(' ') do
+      for var i := 0 to Self.High do
+         Self[i].AddEventListener(typ, @callback, True);
+   Result := Self;
+end;
+
+function JElementsHelper.AddClass(aClass: String): JElements;
+begin
+   for var i := 0 to Self.High do
+      Self[i].ClassList.Add(aClass);
+   Result := Self;
+end;
+
+function JElementsHelper.RemoveClass(aClass: String): JElements;
+begin
+   for var i := 0 to Self.High do
+      Self[i].ClassList.Remove(aClass);
+   Result := Self;
+end;
+
+function JElementsHelper.CSS(styles: Variant): JElements;
+begin
+   for var i := 0 to Self.High do begin
+      var s := Self[i].Style;
+      for var k in styles do
+         s.setProperty(k, styles[k]);
+   end;
+   Result := Self;
+end;
+
+procedure JElementsHelper.SetAttribute(name: String; value: String);
+begin
+   for var i := 0 to Self.High do
+      Self[i].SetAttribute(name, value);
+end;
+
