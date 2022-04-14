@@ -36,7 +36,6 @@ function Document : Variant; external 'document' property;
 function Window : Variant; external 'window' property;
 function Console : Variant; external 'console' property;
 function Math : Variant; external 'Math' property;
-function LocalStorage : Variant; external 'localStorage' property;
 function Event : Variant; external 'event' property;
 
 function ElementByID(id : String) : JElement; external 'document.getElementById';
