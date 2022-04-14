@@ -23,6 +23,7 @@ type
 
       function AddClass(aClass : String) : JElement;
       function RemoveClass(aClass : String) : JElement;
+      function CSS(styles : Variant) : JElement;
 
       function FadeOut(durationMSec : Integer; callback : procedure) : JElement;
    end;
@@ -121,6 +122,13 @@ begin
    Result := Self;
 end;
 
+function JElementHelper.CSS(styles: Variant): JElement;
+begin
+   for var k in styles do
+      Style.setProperty(k, styles[k]);
+   Result := Self;
+end;
+
 function JElementHelper.FadeOut(durationMSec: Integer; callback: procedure  ): JElement;
 begin
    var sv = Variant(Self);
@@ -187,11 +195,8 @@ end;
 
 function JElementsHelper.CSS(styles: Variant): JElements;
 begin
-   for var i := 0 to Self.High do begin
-      var s := Self[i].Style;
-      for var k in styles do
-         s.setProperty(k, styles[k]);
-   end;
+   for var i := 0 to Self.High do
+      Self[i].CSS(styles);
    Result := Self;
 end;
 
@@ -200,4 +205,5 @@ begin
    for var i := 0 to Self.High do
       Self[i].SetAttribute(name, value);
 end;
+
 
