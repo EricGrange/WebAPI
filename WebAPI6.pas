@@ -4,5 +4,5 @@ uses
    WebAPI.Core,
    WebAPI.Elements, WebAPI.Elements.Helpers,
    WebAPI.Storage, WebAPI.Storage.Helpers,
-   WebAPI.Fetch,
+   WebAPI.Fetch, WebAPI.Blob,
    WebAPI.Date;
