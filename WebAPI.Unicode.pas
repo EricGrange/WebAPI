@@ -1,6 +1,6 @@
 ﻿unit WebAPI.Unicode;
 
-uses WebAPI, WebAPI.TypedArrays;
+uses WebAPI.Core, WebAPI.TypedArrays;
 
 type
    UTF8Encoder = class static
