@@ -2,7 +2,7 @@
 
 interface
 
-uses WebAPI;
+uses WebAPI.Core;
 
 type
    JArrayBuffer = class external 'ArrayBuffer'
