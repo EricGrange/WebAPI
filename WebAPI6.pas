@@ -5,4 +5,5 @@ uses
    WebAPI.Elements, WebAPI.Elements.Helpers,
    WebAPI.Storage, WebAPI.Storage.Helpers,
    WebAPI.Fetch, WebAPI.Blob,
-   WebAPI.Date;
+   WebAPI.Date,
+   WebAPI.WeakMap;
