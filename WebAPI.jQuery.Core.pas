@@ -91,6 +91,7 @@ type
       function Blur(handler : TJQueryEvent) : JJQuery; overload; external 'blur';
 
       function Change(handler : procedure) : JJQuery; overload; external 'change';
+      function Change : JJQuery; overload; external 'change';
 
       function Children(selector : String) : JJQuery; overload; external 'children';
       function Children : JJQuery; overload; external 'children';
