@@ -11,8 +11,8 @@ type
 
    JBlobHelper = helper for JBlob
 
-      class function CreateUTF8Text(txt : String; mimeType : String = 'text/plain') : JBlob;
-      class function CreateUTF16LEText(txt : String; mimeType : String = 'text/plain') : JBlob;
+      class function CreateUTF8Text(txt : String; mimeType : String = 'text/plain') : JBlob; static;
+      class function CreateUTF16LEText(txt : String; mimeType : String = 'text/plain') : JBlob; static;
 
    end;
 
