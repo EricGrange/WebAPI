@@ -6,6 +6,10 @@ uses WebAPI.Elements, WebAPI.Core;
 
 type
 
+   JElementOffset = class external
+      Left, Top : Float;
+   end;
+
    JElementHelper = helper for JElement
 
       function AppendHTML(html : String) : JElement;
@@ -26,6 +30,8 @@ type
       function CSS(styles : Variant) : JElement;
 
       function FadeOut(durationMSec : Integer; callback : procedure) : JElement;
+
+      function Offset : JElementOffset;
    end;
 
    JElementsHelper = helper for JElements
@@ -148,6 +154,15 @@ begin
    Result := Self;
 end;
 
+function JElementHelper.Offset : JElementOffset;
+begin
+   var r = Self.GetBoundingClientRect;
+   Result := JElementOffset(class
+      Left := r.Left + Window.scrollX;
+      Top := r.Top + Window.scrollY;
+   end);
+end;
+
 // JElementsHelper
 
 procedure JElementsHelper.Each(callback: procedure (element: JElement));
@@ -212,4 +227,5 @@ function JElementsHelper.Sort(cmp: function (a: JElement; b: JElement): Integer)
 begin
    Result := JElements(Variant(JArray.From(Self)).sort(@cmp));
 end;
+
 
