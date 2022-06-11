@@ -44,6 +44,8 @@ type
       procedure SetAttribute(name, value : String);
       property Attr[name : String] : String write SetAttribute;
 
+      function Sort(cmp :function (a, b : JElement) : Integer) : JElements;
+
    end;
 
 implementation
@@ -206,4 +208,8 @@ begin
       Self[i].SetAttribute(name, value);
 end;
 
+function JElementsHelper.Sort(cmp: function (a: JElement; b: JElement): Integer): JElements;
+begin
+   Result := JElements(Variant(JArray.From(Self)).sort(@cmp));
+end;
 
