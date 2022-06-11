@@ -38,6 +38,8 @@ type
       ClassName : String; external 'className';
       InnerHTML : String; external 'innerHTML';
       InnerText : String; external 'innerText';
+      PreviousElementSibling  : JElement; external 'previousElementSibling';
+      NextElementSibling : JElement; external 'nextElementSibling';
       ParentElement : JElement; external 'parentElement';
       Style : Variant; external 'style';
       TextContent : String; external 'textContent';
