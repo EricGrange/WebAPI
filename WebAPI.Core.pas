@@ -28,6 +28,12 @@ type
 
    end;
 
+   JArray = class external 'Array'
+
+      class function From(arrayLike : Variant) : array of Variant; external 'from';
+
+   end;
+
 function JSON : JJSON; external 'JSON' property;
 
 function This : Variant; external 'this' property;
