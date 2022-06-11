@@ -13,6 +13,19 @@ type
 
    end;
 
+   JDOMRect = class external 'DOMRect'
+
+      X : Float; external 'x';
+      Y : Float; external 'y';
+      Width : Float; external 'width';
+      Height : Float; external 'height';
+      Top : Float; external 'top';
+      Right : Float; external 'right';
+      Bottom : Float; external 'bottom';
+      Left : Float; external 'left';
+      
+   end;
+
    JElement = class;
    JElements = array of JElement;
 
@@ -49,6 +62,8 @@ type
       procedure AddEventListener(eventType : String; callback : procedure; useCapture : Boolean); overload; external 'addEventListener';
       procedure AddEventListener(eventType : String; callback : procedure (event : Variant); useCapture : Boolean); overload; external 'addEventListener';
       procedure Focus; external 'focus';
+
+      function GetBoundingClientRect : JDOMRect; external 'getBoundingClientRect';
 
    end;
 
